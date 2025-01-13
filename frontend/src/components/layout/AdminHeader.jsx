@@ -14,9 +14,9 @@ const Header = () => {
   const {user}=useSelector((state)=>state.auth)
   
   const navigation = [
-    { name: 'Home', href: '/', current: true },
-    { name: 'Grades', href:'/grades', current: false },
-    { name: 'Leaves', href: '/leaves', current: false },
+    { name: 'Dashboard', href: '/admin-dashboard', current: true },
+    { name: 'Grades', href:'/admin-grades', current: false },
+ 
   ]
   
   function classNames(...classes) {
@@ -45,7 +45,7 @@ const Header = () => {
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
-             <h1 onClick={()=>{navigate('/')}} className='text-2xl text-white'>
+            <h1 onClick={()=>{navigate('/admin-dashboard')}} className='text-2xl text-white'>
               AMS
              </h1>
             </div>

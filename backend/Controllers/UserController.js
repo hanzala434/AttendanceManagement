@@ -85,7 +85,7 @@ const generateToken=(id,role)=>{
 
 
   const updateUser = asyncHandler(async (req, res) => {
-    const { name, email, password, address, phone, image } = req.body;
+    const { name, email, password, address, phone } = req.body;
   
     const user = await User.findById(req.params.id);
   
@@ -102,8 +102,8 @@ const generateToken=(id,role)=>{
     user.email = email || user.email;
     user.address = address || user.address;
     user.phone = phone || user.phone;
-    user.image = image || user.image;
-    user.password = password || user.password;
+    // user.image = image || user.image;
+    user.password = user.password;
 
 
 
@@ -117,8 +117,8 @@ const generateToken=(id,role)=>{
       email: updatedUser.email,
       address: updatedUser.address,
       phone: updatedUser.phone,
-      role: updatedUser.role,
-      image: updatedUser.image,
+    //   role: updatedUser.role,
+    //   image: updatedUser.image,
 
     });
   });

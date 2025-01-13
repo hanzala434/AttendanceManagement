@@ -8,9 +8,12 @@ import AdminDashboard from './pages/AdminDashboard';
 import NotFoundPage from './pages/NotFoundPage';
 import LeaveFormPage from './pages/LeaveFormPage';
 import AdminLeaveDetailPage from './pages/AdminLeaveDetailPage';
-import ProfilePage from './components/Profile';
+import ProfilePage from './pages/ProfilePage';
 import EditProfilePage from './pages/EditProfilePage';
-
+import UserGradesPage from './pages/UserGradesPage';
+import AdminGradesPage from './pages/AdminGradesPage';
+import UserLeavePage from './pages/UserLeavePage'
+import PrivateRoutes from './components/PrivateRoutes';
 
 function App() {
   return (
@@ -22,14 +25,33 @@ function App() {
     <Route path="/leave-form" element={<LeaveFormPage/>} />
     <Route path="/your-profile" element={<ProfilePage/>} />
     <Route path="/edit-profile" element={<EditProfilePage/>} />
+    <Route path="/grades" element={<UserGradesPage/>} />
+    <Route path="/leaves" element={<UserLeavePage/>} />
 
 
 
 
 
-    <Route path="/admin-login" element={<AdminLoginPage/>} />
-    <Route path="/admin-dashboard" element={<AdminDashboard/>} />
-    <Route path="/leave-detail/:id" element={<AdminLeaveDetailPage/>} />
+
+
+    <Route path="/admin-login" element={
+        <AdminLoginPage/>
+      } />
+    <Route path="/admin-dashboard" element={
+      <PrivateRoutes>
+      <AdminDashboard/>
+    </PrivateRoutes>
+    } />
+    <Route path="/leave-detail/:id" element={
+      <PrivateRoutes>
+      <AdminLeaveDetailPage/>
+    </PrivateRoutes>
+    } />
+    <Route path="/admin-grades" element={
+      <PrivateRoutes>
+      <AdminGradesPage/>
+    </PrivateRoutes>
+      } />
 
 
 

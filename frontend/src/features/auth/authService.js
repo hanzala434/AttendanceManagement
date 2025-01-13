@@ -15,8 +15,8 @@ const register=async(userData)=>{
 }
 
 //update user
-const updateUser=async(userData,id)=>{
-    const res=await axios.post(`${API_URL}/update-user/${id}`,userData)
+const updateUser=async({updatedData,id})=>{
+    const res=await axios.post(`${API_URL}/update-user/${id}`,updatedData)
     
     if(res.data){
         localStorage.setItem('user',JSON.stringify(res.data))

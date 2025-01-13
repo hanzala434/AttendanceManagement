@@ -21,9 +21,9 @@ export const register=createAsyncThunk('auth/register',async(user,thunkAPI)=>{
 })
 
 //update user data
-export const updateUser=createAsyncThunk('auth/updateUser',async({user,id},thunkAPI)=>{
+export const updateUser=createAsyncThunk('auth/updateUser',async({updatedData,id},thunkAPI)=>{
     try{
-        return await authService.updateUser({user,id})
+        return await authService.updateUser({updatedData,id})
     }catch(error){
         const message=(error.res && error.res.data && error.res.data.message)||error.message||error.toString()
         return thunkAPI.rejectWithValue(message)

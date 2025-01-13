@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAttendance } from '../features/attendance/attendanceSlice'; // Adjust the import path as needed
 import Leave from './Leave';
+import { updateGrade } from '../features/grade/gradeSlice';
 
 const Attendance = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const userId = useSelector((state) => state.auth.user?._id);
+
   const { attendance } = useSelector((state) => state.attendance);
   const [attendanceMarked, setAttendanceMarked] = useState(false);
   const [attendanceTime, setAttendanceTime] = useState(null);
@@ -19,7 +22,7 @@ const Attendance = () => {
       const now = new Date();
       const diffInHours = (now - savedDate) / (1000 * 60 * 60);
 
-      if (diffInHours == 0) {
+      if (diffInHours ==0) {
         setAttendanceMarked(true);
         setAttendanceTime(savedDate);
       } else {
@@ -44,6 +47,7 @@ const Attendance = () => {
     };
 
     // Dispatch the createAttendance action
+
     dispatch(createAttendance(attendanceData))
       .unwrap() // Unwraps the result for direct handling of success or error
       .then((response) => {
@@ -57,7 +61,9 @@ const Attendance = () => {
         alert('Failed to mark attendance: ' + error.message);
         setIsSubmitting(false);
       });
+      dispatch(updateGrade({userId}))
 
+      console.log(userId)
       console.log(attendanceData);
   };
 

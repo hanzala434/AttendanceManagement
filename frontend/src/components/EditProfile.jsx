@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../features/auth/authSlice'; // Adjust the import path as needed
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const UserEditForm = () => {
   const dispatch = useDispatch();
+  const navigate=useNavigate()
   const {user}=useSelector((state)=>state.auth)
+  const id=useSelector((state)=>state.auth.user?._id)
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     address: '',
     phone: '',
-    image: '',
+    // image: '',
   });
 
   const [imageFile, setImageFile] = useState(null);
@@ -25,24 +30,44 @@ const UserEditForm = () => {
     });
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
-      setImagePreview(URL.createObjectURL(file));
+  
+
+  
+  const handleFileChange = (event) => {
+    setImageFile(event.target.files[0]);
+  };
+
+
+  const handleFileUpload = async () => {
+    if (!imageFile) return;
+
+    const formData = new FormData();
+    formData.append('myFile', imageFile, imageFile.name);
+
+    try {
+      // const response = await axios.post('http://localhost:8080/api/upload', formData);
+      const response = await axios.post(`${process.env.REACT_APP_API}/api/upload`, formData);
+       const uploadedImagePath = response.data.filePath;
+      console.log(uploadedImagePath);
+      setFormData((prevState) => ({
+        ...prevState,
+        image: [...prevState.image, uploadedImagePath],
+      }));
+      console.log('Uploaded file:', uploadedImagePath);
+    } catch (error) {
+      console.error('Error uploading file:', error);
     }
   };
-  const id=useSelector((state)=>state.auth.user._id)
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const updatedData = {
       ...formData,
-      image: imageFile || formData.image,
+      // image: imageFile || formData.image.name,
     };
 
-    dispatch(updateUser({updatedData}))
+    dispatch(updateUser({updatedData,id}))
       .unwrap()
       .then(() => {
         alert('User updated successfully');
@@ -51,7 +76,7 @@ const UserEditForm = () => {
         alert('Failed to update user: ' + error.message);
       });
       console.log(updatedData)
-      console.log(user._id)
+      navigate('/your-profile')
   };
 
   return (
@@ -113,11 +138,11 @@ const UserEditForm = () => {
           />
         </div>
 
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-gray-700">Image</label>
           <input
             type="file"
-            onChange={handleImageChange}
+            onChange={handleFileChange}
             className="w-full p-2 border border-gray-300 rounded"
           />
           {imagePreview && (
@@ -127,7 +152,14 @@ const UserEditForm = () => {
               className="mt-2 h-32 w-32 object-cover rounded"
             />
           )}
-        </div>
+             <button
+              type="button"
+              onClick={handleFileUpload}
+              className="mt-2 bg-blue-700 text-white px-3 py-1 rounded"
+            >
+              Upload Image
+            </button>
+        </div> */}
 
         <button
           type="submit"
